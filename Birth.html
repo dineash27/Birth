@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birth Certificate · Maharashtra</title>
+  <!-- Font Awesome (optional, for icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- QRCode.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e6e9ef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 20px;
+      font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+    }
+
+    /* certificate card */
+    .certificate {
+      max-width: 950px;
+      width: 100%;
+      background: white;
+      padding: 30px 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.2s;
+    }
+
+    /* header section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 3px solid #1a3e6f;
+      padding-bottom: 15px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .gov-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gov-title .form-no {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1a3e6f;
+      background: #f0f4fc;
+      display: inline-block;
+      padding: 0 12px;
+      border-radius: 30px;
+      margin-bottom: 6px;
+    }
+
+    .gov-title h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0b2b4a;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .gov-title h1 small {
+      display: block;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #2e4d74;
+      margin-top: 2px;
+    }
+
+    .emblem {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .emblem i {
+      font-size: 2.8rem;
+      color: #1a3e6f;
+      background: #f0f4fc;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    .emblem .digital-badge {
+      background: #eef4e8;
+      padding: 8px 15px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1f5a3a;
+      border: 1px solid #a8c4b0;
+    }
+
+    .subhead {
+      font-size: 0.9rem;
+      color: #1f3b5c;
+      background: #f2f6fe;
+      padding: 8px 15px;
+      border-radius: 40px;
+      margin-bottom: 20px;
+      display: inline-block;
+      border-left: 4px solid #2a6b9e;
+      font-weight: 500;
+    }
+
+    /* table style */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 10px;
+      font-size: 0.95rem;
+    }
+
+    .detail-table td,
+    .detail-table th {
+      border: 1px solid #b8c9e0;
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+
+    .detail-table .label {
+      background: #f5f9ff;
+      font-weight: 600;
+      color: #0a2c4b;
+      width: 32%;
+      letter-spacing: 0.3px;
+    }
+
+    .detail-table .value {
+      background: white;
+      font-weight: 500;
+      color: #1d2f44;
+    }
+
+    .detail-table .value small {
+      font-weight: 400;
+      color: #3e5b7a;
+      margin-left: 6px;
+    }
+
+    .detail-table .value .hindi {
+      font-weight: 400;
+      color: #2e4d6e;
+      margin-right: 8px;
+    }
+
+    .detail-table .sub-header {
+      background: #e1ebf7;
+      font-weight: 700;
+      color: #0b2b4a;
+      text-align: center;
+      padding: 6px 8px;
+    }
+
+    .reg-row td {
+      background: #fafcff;
+    }
+
+    /* parent address block */
+    .address-block {
+      margin-top: 5px;
+      font-size: 0.95rem;
+    }
+
+    .address-block .addr-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 15px;
+      padding: 4px 0;
+    }
+
+    .addr-label {
+      font-weight: 600;
+      color: #0a2c4b;
+      min-width: 80px;
+    }
+
+    .signature-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 25px;
+      border-top: 2px dashed #b3c9e0;
+      padding-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .signature-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signature-box .digi-sign {
+      font-size: 0.9rem;
+      color: #1f4b7a;
+      background: #edf3fb;
+      padding: 6px 20px 6px 16px;
+      border-radius: 40px;
+      border: 1px solid #1a3e6f;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+    }
+
+    .signature-box .digi-sign i {
+      font-size: 1.2rem;
+      color: #1f5a3a;
+    }
+
+    .issue-date {
+      font-size: 1rem;
+      font-weight: 600;
+      background: #f3f7fd;
+      padding: 8px 20px;
+      border-radius: 50px;
+      color: #0b2b4a;
+      border: 1px solid #adc2db;
+    }
+
+    .issue-date i {
+      margin-right: 8px;
+      color: #1f5a3a;
+    }
+
+    .footer-note {
+      margin-top: 15px;
+      font-size: 0.7rem;
+      color: #486582;
+      text-align: right;
+      border-top: 1px solid #d6e2f0;
+      padding-top: 12px;
+    }
+
+    /* QR Code Section */
+    .qr-section {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 2px dashed #b3c9e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qr-container {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: #fafdff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      border: 1px solid #b8c9e0;
+      width: 100%;
+    }
+
+    #qrcode {
+      padding: 10px;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #1a3e6f;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .qr-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.9rem;
+      color: #1a3e6f;
+      background: #f5f9ff;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border-left: 5px solid #1a3e6f;
+      max-width: 320px;
+      border: 1px solid #b8c9e0;
+      border-left-width: 6px;
+    }
+
+    .qr-info .qr-label {
+      font-weight: 700;
+      color: #0b2b4a;
+      font-size: 0.95rem;
+    }
+
+    .qr-info .qr-hint {
+      font-size: 0.85rem;
+      color: #2e4d74;
+    }
+
+    .qr-info .qr-hint i {
+      margin-right: 6px;
+    }
+
+    .scan-badge {
+      background: #e6f0e6;
+      padding: 6px 24px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      color: #1a5a3a;
+      border: 1.5px solid #2b7a4a;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .certificate {
+        padding: 20px 15px;
+      }
+      .header {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .gov-title h1 {
+        font-size: 1.4rem;
+      }
+      .detail-table td,
+      .detail-table th {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+      }
+      .detail-table .label {
+        width: 38%;
+      }
+      .signature-area {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .emblem {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .issue-date {
+        align-self: flex-start;
+      }
+      .qr-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+      }
+      .qr-info {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .certificate {
+        box-shadow: none;
+        border: 2px solid #1a3e6f;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="certificate">
+
+    <!-- HEADER: FORM NO + GOV + EMBLEM -->
+    <div class="header">
+      <div class="gov-title">
+        <span class="form-no"><i class="fas fa-file-alt" style="margin-right: 8px;"></i>FORM NO. 5</span>
+        <h1>
+          GOVERNMENT OF MAHARASHTRA
+          <small>HEALTH DEPARTMENT</small>
+        </h1>
+        <div style="margin-top: 6px;">
+          <span class="subhead">
+            <i class="fas fa-birthday-cake" style="margin-right: 8px;"></i>
+            जन्म प्रमाण पत्र / BIRTH CERTIFICATE
+          </span>
+        </div>
+      </div>
+      <div class="emblem">
+        <i class="fas fa-flag-india"></i>
+        <span class="digital-badge"><i class="fas fa-check-circle"></i> e‑अधिकृत</span>
+      </div>
+    </div>
+
+    <!-- ACT / RULE REFERENCE -->
+    <div style="font-size:0.8rem; color:#1f4b7a; background:#eaf0fa; padding: 6px 14px; border-radius: 30px; margin-bottom: 16px; display:inline-block;">
+      <i class="fas fa-gavel"></i> Issued under section 12/17 of the Registration of Births & Deaths, Act, 1969 and Rule 8/13 of the Maharashtra Registration of Births and Deaths Rules, 2000
+    </div>
+    <div style="font-size:0.8rem; color:#1f4b7a; background:#eaf0fa; padding: 6px 14px; border-radius: 30px; margin-bottom: 16px; display:inline-block;">
+      <i class="fas fa-gavel"></i> जन्म नोंदणी कलम 12/17 अंतर्गत जारी, जन्म आणि मृत्यू नोंदणी कायदा 1969 आणि महाराष्ट्र जन्म आणि मृत्यू नोंदणी नियम, 2000 चा नियम 8/13
+    </div>
+
+    <!-- MAIN TABLE -->
+    <table class="detail-table">
+      <!-- REGISTRATION DETAILS (row) -->
+      <tr>
+        <td colspan="2" class="sub-header" style="border-bottom: 2px solid #a1b9d6;">
+          <i class="fas fa-pen-fancy" style="margin-right: 10px;"></i> REGISTRATION DETAILS
+        </td>
+      </tr>
+      <tr class="reg-row">
+        <td class="label"><i class="fas fa-hashtag" style="margin-right: 8px;"></i> नोंदणी क्रमांक / Registration No.</td>
+        <td class="value"><span class="hindi">१२७७</span> / 1277</td>
+      </tr>
+      <tr class="reg-row">
+        <td class="label"><i class="far fa-calendar-alt" style="margin-right: 8px;"></i> नोंदणी दिनांक / Date of Registration</td>
+        <td class="value"><span class="hindi">१५-६-२०१९</span> / 15-06-2019</td>
+      </tr>
+
+      <!-- CHILD'S DETAILS -->
+      <tr>
+        <td colspan="2" class="sub-header" style="border-top: 2px solid #a1b9d6;">
+          <i class="fas fa-child" style="margin-right: 10px;"></i> CHILD'S DETAILS
+        </td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-user" style="margin-right: 8px;"></i> बाळाचे नाव / Full Name of Child</td>
+        <td class="value"><span class="hindi">केदार</span> KEDAR</td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-venus-mars" style="margin-right: 8px;"></i> लिंग / Sex</td>
+        <td class="value"><span class="hindi">पुरुष</span> / MALE</td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-calendar-day" style="margin-right: 8px;"></i> जन्म दिनांक / Date of Birth</td>
+        <td class="value"><span class="hindi">०४-०६-२०१९</span> / 04-06-2019</td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-map-pin" style="margin-right: 8px;"></i> जन्माचा ठिकाण / Place of Birth</td>
+        <td class="value"><span class="hindi">वुमन हॉस्पिटल बुलडाणा</span> WOMENS HOSPITAL BULDANA</td>
+      </tr>
+
+      <!-- PARENTAL DETAILS -->
+      <tr>
+        <td colspan="2" class="sub-header" style="border-top: 2px solid #a1b9d6;">
+          <i class="fas fa-users" style="margin-right: 10px;"></i> PARENTAL DETAILS
+        </td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-female" style="margin-right: 8px;"></i> आईने पूर्ण नाव / Full Name of Mother</td>
+        <td class="value"><span class="hindi">प्रियंका दिनेशकुमार खिवसरा </span> PRIYANKA DINESHKUMAR KHIVSARA</td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-male" style="margin-right: 8px;"></i> वडिलाचे पूर्ण नाव / Full Name of Father</td>
+        <td class="value"><span class="hindi">दिनेश खिवसरा</span> DINEASH KHIVASARA</td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-home" style="margin-right: 8px;"></i> आई-वडिलांचा पत्ता (जन्माचा वेळ) / Address of Parents at the time of birth of the child</td>
+        <td class="value">
+          <span class="hindi">मु. पो. बोदवड, जि. जळगाव</span> At Post Bowdad, Dist. Jalgaon
+        </td>
+      </tr>
+      <tr>
+        <td class="label"><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> आई-वडिलांचा कामाचा पत्ता / Permanent Address of Parents</td>
+        <td class="value">
+          <span class="hindi">जामठी</span> Jamthi
+        </td>
+      </tr>
+    </table>
+
+    <!-- SIGNATURE + OFFICIAL DIGITAL SIGN & DATE OF ISSUE -->
+    <div class="signature-area">
+      <div class="signature-box">
+        <div class="digi-sign">
+          <i class="fas fa-certificate"></i>
+          Official Digital Signature
+          <i class="fas fa-check-circle" style="color: #1f7a3a; margin-left: 8px;"></i>
+        </div>
+        <div style="margin-top: 8px; font-size: 0.85rem; color: #1f4b7a;">
+          <i class="fas fa-qrcode" style="margin-right: 6px;"></i> digitally verified
+        </div>
+      </div>
+
+      <div class="issue-date">
+        <i class="far fa-calendar-plus"></i>
+        Date of issue : <span class="hindi" style="font-weight:400;">१४-०७-२०२६</span> / 14-07-2026
+      </div>
+    </div>
+
+    <!-- QR CODE SECTION -->
+    <div class="qr-section">
+      <div class="scan-badge">
+        <i class="fas fa-qrcode" style="font-size: 1.2rem;"></i>
+        Scan to verify &amp; redirect to this certificate
+      </div>
+      <div class="qr-container">
+        <div id="qrcode"></div>
+        <div class="qr-info">
+          <span class="qr-label"><i class="fas fa-shield-alt"></i> Verify Authenticity</span>
+          <span class="qr-hint"><i class="fas fa-qrcode"></i> Scan QR code with any QR reader</span>
+          <span class="qr-hint" style="font-size:0.8rem; color:#3e5b7a; margin-top:2px;">
+            <i class="fas fa-info-circle"></i> Redirects to the official certificate page
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- small footer note (acts as per original) -->
+    <div class="footer-note">
+      <i class="fas fa-print" style="margin-right: 8px;"></i>
+      Generated under Maharashtra Birth & Death Registration Rules · 2000
+      <span style="margin:0 12px;">|</span>
+      <i class="fas fa-lock" style="margin-right: 4px;"></i> secure
+    </div>
+
+  </div>
+
+  <!-- QR CODE GENERATION SCRIPT -->
+  <script>
+    (function() {
+      // Get the current page URL
+      const currentUrl = window.location.href;
+
+      // Generate QR code with the current page URL
+      const qrContainer = document.getElementById('qrcode');
+      if (qrContainer) {
+        // Clear any existing content
+        qrContainer.innerHTML = '';
+
+        // Generate QR code using QRCode.js
+        try {
+          new QRCode(qrContainer, {
+            text: currentUrl,
+            width: 160,
+            height: 160,
+            colorDark: "#0b2b4a",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H // High error correction
+          });
+        } catch (e) {
+          // Fallback if QRCode library fails
+          qrContainer.innerHTML = `<div style="padding:20px; background:#f5f9ff; border-radius:12px; border:1px dashed #1a3e6f; font-size:0.9rem; color:#1f3b5c; text-align:center;">
+            <i class="fas fa-qrcode" style="font-size:2.5rem; display:block; margin-bottom:8px;"></i>
+            QR code loading...
+          </div>`;
+        }
+      }
+    })();
+  </script>
+
+</body>
+</html>
